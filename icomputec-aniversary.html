@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICOMPUTEC - Evento Aniversario</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #040817; /* Azul Oscuro Icomputec */
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .icomputec-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .icomputec-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-4px);
+        }
+        .btn-blue {
+            background-color: #2563eb;
+            transition: background-color 0.2s;
+        }
+        .btn-blue:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen p-4 md:p-8">
+
+    <!-- HEADER / AUDIO CONTROL -->
+    <header class="w-full max-w-6xl mx-auto flex justify-between items-center z-10 border-b border-blue-900/50 pb-4">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl font-black text-white tracking-wide">icomputec</span>
+            <span class="bg-blue-600 text-xs px-2 py-1 rounded font-bold uppercase tracking-wider">Aniversario</span>
+        </div>
+
+        <button onclick="toggleAudio()" class="icomputec-card px-4 py-2 rounded-lg flex items-center gap-2 text-xs font-semibold hover:text-blue-400">
+            <span id="audioIcon">🔊</span>
+            <span id="audioText">MÚSICA: OFF</span>
+        </button>
+    </header>
+
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
+
+    <!-- HERO PRINCIPAL -->
+    <main class="w-full max-w-5xl mx-auto text-center my-8">
+        <h1 class="text-3xl md:text-5xl font-extrabold mb-3 text-white tracking-tight">
+            Celebración de Aniversario <span class="text-blue-500">ICOMPUTEC</span>
+        </h1>
+        <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto mb-8">
+            Servicio Técnico PREMIUM de Alta Confianza en Arequipa. ¡Explora nuestras trivias y minijuegos!
+        </p>
+
+        <!-- GRID DE TARJETAS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- 1. TRIVIAS / CURIOSIDADES -->
+            <div onclick="showRandomTrivia()" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
+                <div class="text-4xl my-2">💡</div>
+                <div>
+                    <h3 class="font-bold text-lg text-white">Datos & Trivias</h3>
+                    <p class="text-xs text-slate-400 mt-1">Haz clic para descubrir la historia, servicios e hitos de ICOMPUTEC.</p>
+                </div>
+                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">Ver Dato →</span>
+            </div>
+
+            <!-- 2. MEMORAMA -->
+            <div onclick="openModal('modalMemorama')" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
+                <div class="text-4xl my-2">🧠</div>
+                <div>
+                    <h3 class="font-bold text-lg text-white">Memorama Express</h3>
+                    <p class="text-xs text-slate-400 mt-1">Memoriza las posiciones en 1.5 segundos antes de que se oculten las cartas.</p>
+                </div>
+                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">¡Jugar Ahora! →</span>
+            </div>
+
+            <!-- 3. ICOMPUTEC JUMP -->
+            <div onclick="openModal('modalJump')" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
+                <div class="text-4xl my-2">🚀</div>
+                <div>
+                    <h3 class="font-bold text-lg text-white">Icomputec Jump</h3>
+                    <p class="text-xs text-slate-400 mt-1">¡Mantén presionadas las flechas para saltar entre plataformas de hardware!</p>
+                </div>
+                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">Iniciar Salto →</span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL 1: TRIVIA / CURIOSIDADES REALES -->
+    <div id="modalTrivia" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
+        <div class="icomputec-card bg-slate-900 border-blue-500 max-w-md w-full p-6 rounded-xl text-center relative">
+            <button onclick="closeModal('modalTrivia')" class="absolute top-3 right-3 text-slate-400 hover:text-white">✕</button>
+            <div class="text-3xl mb-3">📍</div>
+            <h3 class="text-lg font-bold text-blue-400 mb-2">¿Sabías que...?</h3>
+            <p id="triviaText" class="text-sm text-slate-200 min-h-[70px] flex items-center justify-center my-4 leading-relaxed"></p>
+            <button onclick="showRandomTrivia()" class="btn-blue text-white px-4 py-2 rounded-lg text-xs font-bold w-full">Ver Otro Dato 🎲</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: MEMORAMA -->
+    <div id="modalMemorama" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
+        <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative">
+            <button onclick="closeModal('modalMemorama')" class="absolute top-3 right-3 text-slate-400 hover:text-white">✕</button>
+            <h3 class="text-lg font-bold text-white mb-1">Memorama de Cómputo</h3>
+            <p id="memoTimer" class="text-xs text-blue-400 mb-3">¡Memoriza las cartas!</p>
+            <div id="memoGrid" class="grid grid-cols-4 gap-2 my-4"></div>
+            <button onclick="startMemorama()" class="btn-blue text-white px-4 py-2 rounded-lg text-xs font-bold w-full">Reiniciar</button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: ICOMPUTEC JUMP -->
+    <div id="modalJump" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
+        <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative">
+            <button onclick="closeModal('modalJump')" class="absolute top-3 right-3 text-slate-400 hover:text-white">✕</button>
+            <h3 class="text-lg font-bold text-white mb-1">🚀 Icomputec Jump</h3>
+            <p class="text-xs text-slate-400 mb-2">Mantén presionadas las flechas ← → o usa los botones para moverte en celular.</p>
+            
+            <canvas id="jumpCanvas" width="300" height="360" class="bg-slate-950 border border-blue-900 mx-auto rounded-lg"></canvas>
+            
+            <!-- Botones táctiles para celulares -->
+            <div class="flex justify-between gap-4 mt-3 md:hidden">
+                <button ontouchstart="keys['ArrowLeft']=true" ontouchend="keys['ArrowLeft']=false" class="bg-blue-800 text-white font-bold w-1/2 py-2 rounded-lg select-none">◀ Izquierda</button>
+                <button ontouchstart="keys['ArrowRight']=true" ontouchend="keys['ArrowRight']=false" class="bg-blue-800 text-white font-bold w-1/2 py-2 rounded-lg select-none">Derecha ▶</button>
+            </div>
+
+            <button onclick="startJumpGame()" class="btn-blue text-white px-4 py-2 rounded-lg text-xs font-bold w-full mt-3">Reiniciar Juego</button>
+        </div>
+    </div>
+
+    <!-- FOOTER EXACTO SOLICITADO -->
+    <footer class="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 border-t border-blue-900/40 pt-4 mt-auto gap-2">
+        <div>
+            © 2026 ICOMPUTEC E.I.R.L. Todos los derechos reservados.
+        </div>
+        <div class="font-semibold text-slate-400">
+            Desarrollado por: <span class="text-blue-400">MI GITHUB - ROK</span>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS EN VANILLA JS -->
+    <script>
+        // AUDIO CONTROL
+        const bgMusic = document.getElementById('bgMusic');
+        function toggleAudio() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                document.getElementById('audioText').innerText = "MÚSICA: ON";
+            } else {
+                bgMusic.pause();
+                document.getElementById('audioText').innerText = "MÚSICA: OFF";
+            }
+        }
+
+        // CONTROL DE MODALES
+        function openModal(id) {
+            document.getElementById(id).classList.replace('hidden', 'flex');
+            if(id === 'modalMemorama') startMemorama();
+            if(id === 'modalJump') startJumpGame();
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.replace('flex', 'hidden');
+        }
+
+        // CURIOSIDADES Y TRIVIAS EXPANDIDAS CON EMOJIS
+        const trivias = [
+            "🏆 ¡Somos empresa líder en Arequipa con 20 años de experiencia técnica ofreciendo excelencia y alta confianza!",
+            "⭐ ¡Recomendados oficialmente en Google con una puntuación de 4.8/5 y más de 100 opiniones reales!",
+            "🔵 Llegar a nosotros es muy fácil: Solo entra a la Galería Nova Center y busca la icónica 'Tienda AZUL' de Arequipa.",
+            "🏢 Te atendemos en la Calle Octavio Muñoz Nájar 221 (Galería Nova Center): Tienda Principal #214 (Piso 2) y Tienda #132 (Piso 1).",
+            "🎮 Especialistas certificados en laptops Gaming y Alta Gama: Lenovo Legion, ASUS ROG, HP Victus, Dell, Acer Nitro y MSI.",
+            "🔬 ¡Contamos con Laboratorio Especializado de Electrónica para reparación de placas madre, Reballing y programación de BIOS!",
+            "💾 Recuperación profesional de datos en discos duros (HDD), unidades de estado sólido (SSD), memorias USB y tarjetas.",
+            "🚚 Atendemos a todo el Sur del Perú: Recibimos y coordinamos envíos desde Camaná, Mollendo, Moquegua, Ilo, Puno, Juliaca, Cusco y Tacna.",
+            "🛠️ Mantenimiento físico especializado: Limpieza profunda, renovación de pasta térmica y revisión del sistema de refrigeración para evitar sobrecalentamiento.",
+            "📑 Empresa formalmente constituida en Perú: ICOMPUTEC E.I.R.L. con RUC 20606656620.[cite: 3]"
+        ];
+
+        function showRandomTrivia() {
+            const random = trivias[Math.floor(Math.random() * trivias.length)];
+            document.getElementById('triviaText').innerText = random;
+            openModal('modalTrivia');
+        }
+
+        // MEMORAMA CON VISTA PREVIA
+        const memoIcons = ['💻', '🖨️', '🔌', '🖱️', '⌨️', '🎧'];
+        let memoCards = [], flipped = [], matched = 0, canClick = false;
+
+        function startMemorama() {
+            const grid = document.getElementById('memoGrid');
+            const timerText = document.getElementById('memoTimer');
+            grid.innerHTML = '';
+            flipped = []; matched = 0; canClick = false;
+            memoCards = [...memoIcons, ...memoIcons].sort(() => Math.random() - 0.5);
+
+            memoCards.forEach((icon, i) => {
+                const card = document.createElement('div');
+                card.className = 'h-14 bg-blue-900/40 border border-blue-500/30 rounded-lg flex items-center justify-center text-2xl cursor-pointer select-none';
+                card.innerText = icon;
+                card.dataset.icon = icon;
+                card.dataset.index = i;
+                card.onclick = () => clickMemoCard(card);
+                grid.appendChild(card);
+            });
+
+            timerText.innerText = "¡Memoriza las posiciones!";
+            setTimeout(() => {
+                Array.from(grid.children).forEach(c => c.innerText = '❓');
+                timerText.innerText = "¡Encuentra los pares!";
+                canClick = true;
+            }, 1500);
+        }
+
+        function clickMemoCard(card) {
+            if (!canClick || card.innerText !== '❓' || flipped.length >= 2) return;
+            card.innerText = card.dataset.icon;
+            flipped.push(card);
+
+            if (flipped.length === 2) {
+                if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
+                    matched++;
+                    flipped = [];
+                    if (matched === memoIcons.length) {
+                        document.getElementById('memoTimer').innerText = "🎉 ¡Felicidades! Ganaste.";
+                    }
+                } else {
+                    canClick = false;
+                    setTimeout(() => {
+                        flipped[0].innerText = '❓';
+                        flipped[1].innerText = '❓';
+                        flipped = [];
+                        canClick = true;
+                    }, 700);
+                }
+            }
+        }
+
+        // JUEGO ICOMPUTEC JUMP (MOVIMIENTO FLUIDO CONTINUO)
+        let jumpCanvas, ctx, player, platforms, gameLoop;
+        const keys = {};
+
+        window.addEventListener('keydown', e => keys[e.key] = true);
+        window.addEventListener('keyup', e => keys[e.key] = false);
+
+        function startJumpGame() {
+            jumpCanvas = document.getElementById('jumpCanvas');
+            ctx = jumpCanvas.getContext('2d');
+            player = { x: 135, y: 280, w: 22, h: 22, dy: -8, gravity: 0.35, speed: 5 };
+            platforms = [
+                { x: 100, y: 330, w: 100, h: 10 },
+                { x: 30, y: 240, w: 80, h: 10 },
+                { x: 180, y: 160, w: 80, h: 10 },
+                { x: 80, y: 80, w: 80, h: 10 }
+            ];
+            
+            cancelAnimationFrame(gameLoop);
+            updateJumpGame();
+        }
+
+        function updateJumpGame() {
+            ctx.clearRect(0, 0, jumpCanvas.width, jumpCanvas.height);
+            
+            // Movimiento continuo según el estado de las teclas
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) {
+                player.x -= player.speed;
+            }
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) {
+                player.x += player.speed;
+            }
+
+            // Mapeo alrededor de la pantalla (Screen Wrap)
+            if (player.x < -player.w) player.x = jumpCanvas.width;
+            if (player.x > jumpCanvas.width) player.x = -player.w;
+
+            // Física de salto
+            player.dy += player.gravity;
+            player.y += player.dy;
+
+            // Dibujar Jugador (Laptop Azul)
+            ctx.fillStyle = '#2563eb';
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+
+            // Dibujar Plataformas (Hardware)
+            ctx.fillStyle = '#1e3a8a';
+            platforms.forEach(p => {
+                ctx.fillRect(p.x, p.y, p.w, p.h);
+                // Colisión solo cuando el jugador va cayendo
+                if (player.dy > 0 && player.x + player.w > p.x && player.x < p.x + p.w &&
+                    player.y + player.h >= p.y && player.y + player.h <= p.y + p.h + 6) {
+                    player.dy = -8.5; // Salto automático
+                }
+            });
+
+            // Scroll vertical de la cámara
+            if (player.y < 140) {
+                player.y = 140;
+                platforms.forEach(p => {
+                    p.y += 4;
+                    if (p.y > jumpCanvas.height) {
+                        p.y = 0;
+                        p.x = Math.random() * (jumpCanvas.width - p.w);
+                    }
+                });
+            }
+
+            // Caída al vacío -> Reinicio
+            if (player.y > jumpCanvas.height) {
+                player.x = 135; player.y = 280; player.dy = -8.5;
+            }
+
+            gameLoop = requestAnimationFrame(updateJumpGame);
+        }
+    </script>
+</body>
+</html>
