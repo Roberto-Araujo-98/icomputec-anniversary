@@ -1,0 +1,72 @@
+    body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #040817; /* Azul Oscuro Icomputec */
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .icomputec-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .icomputec-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-4px);
+        }
+        .btn-blue {
+            background-color: #2563eb;
+            transition: background-color 0.2s;
+        }
+        .btn-blue:hover {
+            background-color: #1d4ed8;
+        }
+
+ /* Estilos para el Memorama 3D */
+.card-scene {
+    perspective: 1000px;
+}
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+/* Efecto hover suave SOLO en la tarjeta pero SIN girarla */
+.card-scene:hover .card-inner:not(.is-matched) {
+    transform: translateY(-3px);
+    filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.5));
+}
+.card-inner.is-flipped,
+.card-inner.is-matched {
+    transform: rotateY(180deg) !important;
+}
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Reverso: ICOMPUTEC Neón */
+.card-front {
+    background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+    border: 1px solid rgba(37, 99, 235, 0.5);
+    box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.3);
+}
+/* Frente: Componente a color sobre fondo claro para contraste */
+.card-back {
+    background: #1e293b;
+    border: 1px solid #3b82f6;
+    transform: rotateY(180deg);
+}
+/* Cartas ya emparejadas (Brillo verde sutil de acierto) */
+.card-inner.is-matched .card-back {
+    border-color: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
