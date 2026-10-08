@@ -177,3 +177,30 @@ body {
     pointer-events: none !important;
     z-index: 999999 !important;
 }
+/* BOTÓN AZUL ESTILIZADO AJUSTADO AL TEXTO */
+.btn-blue-store {
+    display: inline-flex !important;
+    width: fit-content !important; /* Sakupen ti laeng kaakaba ti teksto */
+    max-width: max-content !important;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #2563eb;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(59, 130, 246, 0.6);
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.btn-blue-store:hover {
+    background-color: #1d4ed8;
+    border-color: #60a5fa;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+    transform: translateY(-2px);
+    color: #ffffff !important;
+}
