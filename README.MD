@@ -33,7 +33,7 @@ Esta aplicación web es una **landing page conmemorativa e interactiva** diseña
 | **Identidad & Layout** | ✅ Completado | Diseño responsive y modo oscuro listo. |
 | **Módulo de Trivias** | ✅ Completado | Modal interactivo con datos reales de la empresa. |
 | **Memorama Express** | ✅ Completado | Dificultades fácil/difícil, precarga de assets y victoria con confeti. |
-| **🚀 Icomputec Jump** | ⏳ **En Construcción** | Minijuego de plataformas interactivo en Canvas HTML5 *(en desarrollo)*. |
+| **🚀 Icomputec Jump** | ✅ **Completado** | Minijuego infinito en Canvas HTML5 con físicas de salto, plataformas aleatorias, control continuo y puntuación. |
 
 ---
 
