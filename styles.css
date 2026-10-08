@@ -1,72 +1,179 @@
-    body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #040817; /* Azul Oscuro Icomputec */
-            color: #ffffff;
-            min-height: 100vh;
-        }
-        .icomputec-card {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(37, 99, 235, 0.3);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-        }
-        .icomputec-card:hover {
-            border-color: #2563eb;
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
-            transform: translateY(-4px);
-        }
-        .btn-blue {
-            background-color: #2563eb;
-            transition: background-color 0.2s;
-        }
-        .btn-blue:hover {
-            background-color: #1d4ed8;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #040817; /* Azul Oscuro Icomputec */
+    color: #ffffff;
+    min-height: 100vh;
+}
 
- /* Estilos para el Memorama 3D */
+/* Tarjetas Icomputec Generales */
+.icomputec-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.icomputec-card:hover {
+    border-color: #2563eb;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+    transform: translateY(-4px);
+}
+
+.btn-blue {
+    background-color: #2563eb;
+    transition: background-color 0.2s;
+}
+
+.btn-blue:hover {
+    background-color: #1d4ed8;
+}
+
 .card-scene {
     perspective: 1000px;
 }
+
 .card-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
 }
-/* Efecto hover suave SOLO en la tarjeta pero SIN girarla */
+
+/* Efecto hover ligero sin girar la carta */
 .card-scene:hover .card-inner:not(.is-matched) {
     transform: translateY(-3px);
     filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.5));
 }
+
+/* Girar únicamente al activar is-flipped o is-matched */
 .card-inner.is-flipped,
 .card-inner.is-matched {
     transform: rotateY(180deg) !important;
 }
+
+/* Propiedades comunes de ambas caras */
 .card-front, .card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 }
-/* Reverso: ICOMPUTEC Neón */
+
+/* CARA TRASERA: Texto ICOMPUTEC Neón (Visible por defecto) */
 .card-front {
     background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
     border: 1px solid rgba(37, 99, 235, 0.5);
     box-shadow: inset 0 0 8px rgba(37, 99, 235, 0.3);
+    z-index: 2;
+    transform: rotateY(0deg);
 }
-/* Frente: Componente a color sobre fondo claro para contraste */
+
+/* CARA DELANTERA: Imagen del Componente (Oculta hasta girar) */
 .card-back {
     background: #1e293b;
     border: 1px solid #3b82f6;
     transform: rotateY(180deg);
+    padding: 6px;
+    overflow: hidden;
+    z-index: 1;
 }
-/* Cartas ya emparejadas (Brillo verde sutil de acierto) */
+
+/* Ajuste y tamaño de las imágenes PNG en assets */
+.card-back img {
+    max-width: 60%;
+    max-height: 60%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Resplandor verde de acierto */
 .card-inner.is-matched .card-back {
     border-color: #22c55e;
     box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+
+#memoGrid.grid-easy {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#memoGrid.grid-hard {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+#memoGrid.grid-hard .card-scene {
+    height: 3.5rem;
+}
+
+#memoGrid.grid-hard .card-back img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+/* Transición optimizada con renderizado GPU */
+.card-inner {
+    will-change: transform;
+    transform-style: preserve-3d;
+}
+
+/* Animación de pulso para cartas resueltas */
+@keyframes matchPulse {
+    0% { transform: rotateY(180deg) scale(1); }
+    50% { transform: rotateY(180deg) scale(1.05); }
+    100% { transform: rotateY(180deg) scale(1); }
+}
+
+.card-inner.is-matched {
+    animation: matchPulse 0.4s ease-in-out;
+}
+
+/* EFECTO DE APARICIÓN SUAVE TIPO FADE-IN UP PARA TODO EL MENÚ/HERO */
+@keyframes menuEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    animation: menuEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* RESPLANDOR NEÓN AL PASAR EL CURSOR */
+.brand-glow {
+    display: inline-block;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.brand-glow:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.9), 0 0 35px rgba(37, 99, 235, 0.7);
+    cursor: pointer;
+}
+
+/* FORZAR VISIBILIDAD Y POSICIÓN DEL CONFETI EN PANTALLA COMPLETA */
+#victoryCanvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none !important;
+    z-index: 999999 !important;
 }
