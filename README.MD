@@ -12,7 +12,7 @@
 
 ## 📌 Sobre el Proyecto
 
-Esta aplicación web es una **landing page conmemorativa e interactiva** diseñada para celebrar los **20 años de trayectoria de ICOMPUTEC** en Arequipa. El proyecto combina una estética visual moderna basada en el modo oscuro de la empresa con minijuegos y secciones dinámicas pensadas para conectar con la comunidad, clientes y apasionados de la tecnología.
+Esta aplicación web es una **landing page conmemorativa e interactiva** diseñada para celebrar los **+20 años de trayectoria de ICOMPUTEC** en Arequipa. El proyecto combina una estética visual moderna basada en el modo oscuro de la empresa con minijuegos y secciones dinámicas pensadas para conectar con la comunidad, clientes y apasionados de la tecnología.
 
 ---
 
