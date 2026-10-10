@@ -46,4 +46,4 @@ Esta aplicación web es una **landing page conmemorativa e interactiva** diseña
 
 ---
 
-© 2026 **ICOMPUTEC E.I.R.L.** — Desarrollado por **ROK**.
+© 2026 **ICOMPUTEC E.I.R.L.** — Desarrollado por **-ROK-**.
