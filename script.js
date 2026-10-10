@@ -185,13 +185,19 @@ function openModal(id) {
         targetModal.classList.replace('hidden', 'flex');
         if (id === 'modalMemorama') startMemorama();
         if (id === 'modalJump') startJumpGame();
+        if (id === 'modalSnake') startSnakeGame();
     }
 }
 
 function closeModal(id) {
     const targetModal = document.getElementById(id);
     if (targetModal) {
-        targetModal.classList.replace('flex', 'hidden');
+        targetModal.classList.remove('flex');
+        targetModal.classList.add('hidden');
+
+        // Detener los bucles de los juegos al cerrar para liberar memoria
+        if (id === 'modalJump' && typeof gameLoop !== 'undefined') cancelAnimationFrame(gameLoop);
+        if (id === 'modalSnake' && typeof snakeIntervalId !== 'undefined') clearInterval(snakeIntervalId);
     }
 }
 
@@ -594,3 +600,140 @@ function updateJumpGame() {
 
     gameLoop = requestAnimationFrame(updateJumpGame);
 }
+
+// ==========================================
+// JUEGO 4: CYBER SNAKE (CORREGIDO)
+// ==========================================
+let snakePlayBoard, snakeScoreElement, snakeHighScoreElement;
+let snakeGameOver = false;
+let snakeFoodX = 5, snakeFoodY = 5;
+let snakeX = 10, snakeY = 10;
+let snakeVelocityX = 1, snakeVelocityY = 0; // Inicia moviéndose a la derecha
+let snakeBody = [];
+let snakeIntervalId = null;
+let snakeScore = 0;
+let snakeHighScore = localStorage.getItem("icomputec-snake-highscore") || 0;
+
+function initSnakeGameElements() {
+    snakePlayBoard = document.querySelector("#modalSnake .play-board");
+    snakeScoreElement = document.querySelector("#modalSnake .score");
+    snakeHighScoreElement = document.querySelector("#modalSnake .high-score");
+
+    const snakeControls = document.querySelectorAll("#modalSnake .snake-controls button");
+    snakeControls.forEach(button => {
+        button.onclick = (e) => {
+            e.preventDefault();
+            changeSnakeDirection({ key: button.dataset.key });
+        };
+    });
+}
+
+const updateSnakeFoodPosition = () => {
+    // Generar coordenadas aleatorias en rejilla de 20x20
+    snakeFoodX = Math.floor(Math.random() * 20) + 1;
+    snakeFoodY = Math.floor(Math.random() * 20) + 1;
+}
+
+const handleSnakeGameOver = () => {
+    if (snakeIntervalId) clearInterval(snakeIntervalId);
+    if (snakeScoreElement) {
+        snakeScoreElement.innerText = `¡Game Over! Puntos: ${snakeScore}`;
+    }
+}
+
+const changeSnakeDirection = e => {
+    if ((e.key === "ArrowUp" || e.key === "w" || e.key === "W") && snakeVelocityY !== 1) {
+        snakeVelocityX = 0;
+        snakeVelocityY = -1;
+    } else if ((e.key === "ArrowDown" || e.key === "s" || e.key === "S") && snakeVelocityY !== -1) {
+        snakeVelocityX = 0;
+        snakeVelocityY = 1;
+    } else if ((e.key === "ArrowLeft" || e.key === "a" || e.key === "A") && snakeVelocityX !== 1) {
+        snakeVelocityX = -1;
+        snakeVelocityY = 0;
+    } else if ((e.key === "ArrowRight" || e.key === "d" || e.key === "D") && snakeVelocityX !== -1) {
+        snakeVelocityX = 1;
+        snakeVelocityY = 0;
+    }
+}
+
+function startSnakeGame() {
+    initSnakeGameElements();
+    
+    if (snakeIntervalId) clearInterval(snakeIntervalId);
+    
+    snakeGameOver = false;
+    snakeX = 10; 
+    snakeY = 10;
+    snakeVelocityX = 1;  // Movimiento inicial a la derecha
+    snakeVelocityY = 0;
+    snakeBody = [[10, 10], [9, 10], [8, 10]]; // Inicia con un cuerpo de 3 bloques
+    snakeScore = 0;
+    
+    if (snakeHighScoreElement) {
+        snakeHighScoreElement.innerText = `Récord: ${snakeHighScore}`;
+    }
+    if (snakeScoreElement) {
+        snakeScoreElement.innerText = `Puntos: ${snakeScore}`;
+    }
+
+    updateSnakeFoodPosition();
+    runSnakeGame(); // Renderizar primer frame inmediatamente
+    snakeIntervalId = setInterval(runSnakeGame, 120);
+}
+
+const runSnakeGame = () => {
+    if (snakeGameOver) return handleSnakeGameOver();
+
+    // 1. Detección de comida consumida
+    if (snakeX === snakeFoodX && snakeY === snakeFoodY) {
+        updateSnakeFoodPosition();
+        snakeBody.push([snakeFoodY, snakeFoodX]);
+        snakeScore++;
+        
+        if (snakeScore > snakeHighScore) {
+            snakeHighScore = snakeScore;
+            localStorage.setItem("icomputec-snake-highscore", snakeHighScore);
+        }
+        
+        if (snakeScoreElement) snakeScoreElement.innerText = `Puntos: ${snakeScore}`;
+        if (snakeHighScoreElement) snakeHighScoreElement.innerText = `Récord: ${snakeHighScore}`;
+    }
+
+    // 2. Mover la cabeza
+    snakeX += snakeVelocityX;
+    snakeY += snakeVelocityY;
+
+    // 3. Colisión con bordes (Rejilla 20x20)
+    if (snakeX <= 0 || snakeX > 20 || snakeY <= 0 || snakeY > 20) {
+        snakeGameOver = true;
+        return handleSnakeGameOver();
+    }
+
+    // 4. Desplazar el cuerpo
+    for (let i = snakeBody.length - 1; i > 0; i--) {
+        snakeBody[i] = snakeBody[i - 1];
+    }
+    snakeBody[0] = [snakeX, snakeY];
+
+    // 5. Renderizar HTML dentro del tablero
+    let html = `<div class="food" style="grid-area: ${snakeFoodY} / ${snakeFoodX}"></div>`;
+
+    for (let i = 0; i < snakeBody.length; i++) {
+        const className = (i === 0) ? 'head' : (i % 2 === 0 ? 'body-part-even' : 'body-part-odd');
+        html += `<div class="${className}" style="grid-area: ${snakeBody[i][0]} / ${snakeBody[i][1]}"></div>`;
+        
+        // Colisión con sí misma
+        if (i !== 0 && snakeBody[0][0] === snakeBody[i][0] && snakeBody[0][1] === snakeBody[i][1]) {
+            snakeGameOver = true;
+            return handleSnakeGameOver();
+        }
+    }
+
+    if (snakePlayBoard) {
+        snakePlayBoard.innerHTML = html;
+    }
+}
+
+// Escuchador de teclado
+window.addEventListener("keydown", changeSnakeDirection);
