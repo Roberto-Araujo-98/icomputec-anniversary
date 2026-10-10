@@ -423,9 +423,8 @@ function launchCelebrationAnimation() {
 
     animate();
 }
-
 // ==========================================
-// JUEGO: ICOMPUTEC JUMP (INFINITO + ALEATORIEDAD + ALCANZABILIDAD)
+// JUEGO 3: ICOMPUTEC JUMP (LÓGICA + CONTROLES TÁCTILES + TECLADO)
 // ==========================================
 let jumpCanvas, ctx, player, platforms, gameLoop;
 let currentScore = 0;
@@ -445,20 +444,32 @@ window.addEventListener('keyup', e => {
     }
 });
 
-function setupTouchControls() {
+function setupJumpTouchControls() {
     const btnLeft = document.getElementById('btnJumpLeft');
     const btnRight = document.getElementById('btnJumpRight');
 
     if (btnLeft && btnRight) {
-        btnLeft.ontouchstart = (e) => { e.preventDefault(); keys['ArrowLeft'] = true; };
-        btnLeft.ontouchend = (e) => { e.preventDefault(); keys['ArrowLeft'] = false; };
-        btnLeft.onmousedown = () => { keys['ArrowLeft'] = true; };
-        btnLeft.onmouseup = () => { keys['ArrowLeft'] = false; };
+        const pressLeft = (e) => { e.preventDefault(); keys['ArrowLeft'] = true; };
+        const releaseLeft = (e) => { e.preventDefault(); keys['ArrowLeft'] = false; };
+        const pressRight = (e) => { e.preventDefault(); keys['ArrowRight'] = true; };
+        const releaseRight = (e) => { e.preventDefault(); keys['ArrowRight'] = false; };
 
-        btnRight.ontouchstart = (e) => { e.preventDefault(); keys['ArrowRight'] = true; };
-        btnRight.ontouchend = (e) => { e.preventDefault(); keys['ArrowRight'] = false; };
-        btnRight.onmousedown = () => { keys['ArrowRight'] = true; };
-        btnRight.onmouseup = () => { keys['ArrowRight'] = false; };
+        btnLeft.ontouchstart = pressLeft;
+        btnLeft.ontouchend = releaseLeft;
+        btnLeft.onmousedown = pressLeft;
+        btnLeft.onmouseup = releaseLeft;
+
+        btnRight.ontouchstart = pressRight;
+        btnRight.ontouchend = releaseRight;
+        btnRight.onmousedown = pressRight;
+        btnRight.onmouseup = releaseRight;
+    }
+}
+
+function updateScoreUI() {
+    const scoreText = document.getElementById('jumpScoreText');
+    if (scoreText) {
+        scoreText.innerText = `Puntos: ${currentScore} | Récord: ${highScore}`;
     }
 }
 
@@ -467,13 +478,14 @@ function startJumpGame() {
     if (!jumpCanvas) return;
     ctx = jumpCanvas.getContext('2d');
 
-    setupTouchControls();
+    // Configurar botones táctiles
+    setupJumpTouchControls();
 
-    // Reiniciar Puntuación
+    // Reiniciar puntuación
     currentScore = 0;
     updateScoreUI();
 
-    // Estado inicial del jugador
+    // Estado del jugador
     player = { 
         x: 135, 
         y: 280, 
@@ -484,20 +496,15 @@ function startJumpGame() {
         speed: 5.5 
     };
 
-    // GENERACIÓN ALEATORIA INICIAL DE PLATAFORMAS (Distancia controlada <= 75px)
+    // Generación aleatoria inicial de plataformas
     platforms = [];
-    const basePlatformWidth = 65;
-    
-    // 1. Plataforma base donde cae el jugador al inicio
     platforms.push({ x: 110, y: 330, w: 80, h: 10, visited: true });
 
-    // 2. Generar 4 plataformas distribuidas verticalmente hacia arriba
     let lastY = 330;
     for (let i = 0; i < 4; i++) {
-        // Distancia vertical entre 60px y 75px (alcanzable con dy = -8.5)
         const gapY = Math.floor(Math.random() * 15) + 60; 
         const nextY = lastY - gapY;
-        const width = Math.floor(Math.random() * 15) + 55; // Ancho entre 55px y 70px
+        const width = Math.floor(Math.random() * 15) + 55;
         const nextX = Math.random() * (jumpCanvas.width - width);
 
         platforms.push({
@@ -514,17 +521,10 @@ function startJumpGame() {
     updateJumpGame();
 }
 
-function updateScoreUI() {
-    const scoreText = document.getElementById('jumpScoreText');
-    if (scoreText) {
-        scoreText.innerText = `Puntos: ${currentScore} | Récord: ${highScore}`;
-    }
-}
-
 function updateJumpGame() {
     ctx.clearRect(0, 0, jumpCanvas.width, jumpCanvas.height);
     
-    // 1. Movimiento lateral continuo
+    // 1. Movimiento lateral
     if (keys['ArrowLeft'] || keys['a'] || keys['A']) player.x -= player.speed;
     if (keys['ArrowRight'] || keys['d'] || keys['D']) player.x += player.speed;
 
@@ -535,7 +535,7 @@ function updateJumpGame() {
         player.x = -player.w;
     }
 
-    // 3. Física de gravedad y movimiento vertical
+    // 3. Física de caída y gravedad
     player.dy += player.gravity;
     player.y += player.dy;
 
@@ -561,7 +561,7 @@ function updateJumpGame() {
             player.y + player.h >= p.y && 
             player.y + player.h <= p.y + p.h + 8) {
             
-            player.dy = -8.5; // Salto
+            player.dy = -8.5;
 
             if (!p.visited) {
                 p.visited = true;
@@ -578,21 +578,17 @@ function updateJumpGame() {
         platforms.forEach(p => {
             p.y += 4;
             
-            // Al salir por la parte inferior, reaparece en la parte superior respetando distancia alcanzable
             if (p.y > jumpCanvas.height) {
-                // Busca la plataforma más alta en pantalla para calcular la distancia máxima
                 const highestY = Math.min(...platforms.map(item => item.y));
-                
-                // Asegura un gap vertical máximo de 70px por encima de la más alta
                 p.y = highestY - (Math.floor(Math.random() * 15) + 55);
-                p.w = Math.floor(Math.random() * 15) + 55; // Ancho acotado (55px - 70px)
+                p.w = Math.floor(Math.random() * 15) + 55;
                 p.x = Math.random() * (jumpCanvas.width - p.w);
                 p.visited = false;
             }
         });
     }
 
-    // 5. CAÍDA AL VACÍO -> REINICIO CON NUEVA DISPOSICIÓN ALEATORIA
+    // 5. CAÍDA AL VACÍO -> REINICIO TOTAL
     if (player.y > jumpCanvas.height) {
         startJumpGame();
         return;
@@ -601,18 +597,63 @@ function updateJumpGame() {
     gameLoop = requestAnimationFrame(updateJumpGame);
 }
 
+
 // ==========================================
-// JUEGO 4: CYBER SNAKE (CORREGIDO)
+// JUEGO 4: CYBER SNAKE (CONTROLES WASD/FLECHAS + SWIPE + ESTILO)
 // ==========================================
 let snakePlayBoard, snakeScoreElement, snakeHighScoreElement;
 let snakeGameOver = false;
 let snakeFoodX = 5, snakeFoodY = 5;
 let snakeX = 10, snakeY = 10;
-let snakeVelocityX = 1, snakeVelocityY = 0; // Inicia moviéndose a la derecha
+let snakeVelocityX = 1, snakeVelocityY = 0;
 let snakeBody = [];
 let snakeIntervalId = null;
 let snakeScore = 0;
 let snakeHighScore = localStorage.getItem("icomputec-snake-highscore") || 0;
+
+// Variables para deslizamiento táctil (Swipe)
+let touchStartX = 0, touchStartY = 0;
+
+function setupSnakeTouchSwipe() {
+    const container = document.getElementById('snakeBoardContainer');
+    if (!container) return;
+
+    container.ontouchstart = (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    };
+
+    container.ontouchmove = (e) => {
+        e.preventDefault(); // Evita scroll de pantalla mientras juega
+    };
+
+    container.ontouchend = (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Umbral mínimo de deslizamiento
+        if (Math.abs(diffX) > 20 || Math.abs(diffY) > 20) {
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                // Deslizamiento Horizontal
+                if (diffX > 0 && snakeVelocityX !== -1) {
+                    snakeVelocityX = 1; snakeVelocityY = 0;
+                } else if (diffX < 0 && snakeVelocityX !== 1) {
+                    snakeVelocityX = -1; snakeVelocityY = 0;
+                }
+            } else {
+                // Deslizamiento Vertical
+                if (diffY > 0 && snakeVelocityY !== -1) {
+                    snakeVelocityX = 0; snakeVelocityY = 1;
+                } else if (diffY < 0 && snakeVelocityY !== 1) {
+                    snakeVelocityX = 0; snakeVelocityY = -1;
+                }
+            }
+        }
+    };
+}
 
 function initSnakeGameElements() {
     snakePlayBoard = document.querySelector("#modalSnake .play-board");
@@ -626,10 +667,24 @@ function initSnakeGameElements() {
             changeSnakeDirection({ key: button.dataset.key });
         };
     });
+
+    setupSnakeTouchSwipe();
+}
+
+const changeSnakeDirection = e => {
+    const key = e.key;
+    if ((key === "ArrowUp" || key === "w" || key === "W") && snakeVelocityY !== 1) {
+        snakeVelocityX = 0; snakeVelocityY = -1;
+    } else if ((key === "ArrowDown" || key === "s" || key === "S") && snakeVelocityY !== -1) {
+        snakeVelocityX = 0; snakeVelocityY = 1;
+    } else if ((key === "ArrowLeft" || key === "a" || key === "A") && snakeVelocityX !== 1) {
+        snakeVelocityX = -1; snakeVelocityY = 0;
+    } else if ((key === "ArrowRight" || key === "d" || key === "D") && snakeVelocityX !== -1) {
+        snakeVelocityX = 1; snakeVelocityY = 0;
+    }
 }
 
 const updateSnakeFoodPosition = () => {
-    // Generar coordenadas aleatorias en rejilla de 20x20
     snakeFoodX = Math.floor(Math.random() * 20) + 1;
     snakeFoodY = Math.floor(Math.random() * 20) + 1;
 }
@@ -641,22 +696,6 @@ const handleSnakeGameOver = () => {
     }
 }
 
-const changeSnakeDirection = e => {
-    if ((e.key === "ArrowUp" || e.key === "w" || e.key === "W") && snakeVelocityY !== 1) {
-        snakeVelocityX = 0;
-        snakeVelocityY = -1;
-    } else if ((e.key === "ArrowDown" || e.key === "s" || e.key === "S") && snakeVelocityY !== -1) {
-        snakeVelocityX = 0;
-        snakeVelocityY = 1;
-    } else if ((e.key === "ArrowLeft" || e.key === "a" || e.key === "A") && snakeVelocityX !== 1) {
-        snakeVelocityX = -1;
-        snakeVelocityY = 0;
-    } else if ((e.key === "ArrowRight" || e.key === "d" || e.key === "D") && snakeVelocityX !== -1) {
-        snakeVelocityX = 1;
-        snakeVelocityY = 0;
-    }
-}
-
 function startSnakeGame() {
     initSnakeGameElements();
     
@@ -665,27 +704,23 @@ function startSnakeGame() {
     snakeGameOver = false;
     snakeX = 10; 
     snakeY = 10;
-    snakeVelocityX = 1;  // Movimiento inicial a la derecha
+    snakeVelocityX = 1;
     snakeVelocityY = 0;
-    snakeBody = [[10, 10], [9, 10], [8, 10]]; // Inicia con un cuerpo de 3 bloques
+    snakeBody = [[10, 10], [9, 10], [8, 10]];
     snakeScore = 0;
     
-    if (snakeHighScoreElement) {
-        snakeHighScoreElement.innerText = `Récord: ${snakeHighScore}`;
-    }
-    if (snakeScoreElement) {
-        snakeScoreElement.innerText = `Puntos: ${snakeScore}`;
-    }
+    if (snakeHighScoreElement) snakeHighScoreElement.innerText = `Récord: ${snakeHighScore}`;
+    if (snakeScoreElement) snakeScoreElement.innerText = `Puntos: ${snakeScore}`;
 
     updateSnakeFoodPosition();
-    runSnakeGame(); // Renderizar primer frame inmediatamente
+    runSnakeGame();
     snakeIntervalId = setInterval(runSnakeGame, 120);
 }
 
 const runSnakeGame = () => {
     if (snakeGameOver) return handleSnakeGameOver();
 
-    // 1. Detección de comida consumida
+    // 1. Comer fruta
     if (snakeX === snakeFoodX && snakeY === snakeFoodY) {
         updateSnakeFoodPosition();
         snakeBody.push([snakeFoodY, snakeFoodX]);
@@ -700,40 +735,36 @@ const runSnakeGame = () => {
         if (snakeHighScoreElement) snakeHighScoreElement.innerText = `Récord: ${snakeHighScore}`;
     }
 
-    // 2. Mover la cabeza
+    // 2. Mover cabeza
     snakeX += snakeVelocityX;
     snakeY += snakeVelocityY;
 
-    // 3. Colisión con bordes (Rejilla 20x20)
+    // 3. Colisión bordes
     if (snakeX <= 0 || snakeX > 20 || snakeY <= 0 || snakeY > 20) {
         snakeGameOver = true;
         return handleSnakeGameOver();
     }
 
-    // 4. Desplazar el cuerpo
+    // 4. Mover cuerpo
     for (let i = snakeBody.length - 1; i > 0; i--) {
         snakeBody[i] = snakeBody[i - 1];
     }
     snakeBody[0] = [snakeX, snakeY];
 
-    // 5. Renderizar HTML dentro del tablero
+    // 5. Renderizar
     let html = `<div class="food" style="grid-area: ${snakeFoodY} / ${snakeFoodX}"></div>`;
 
     for (let i = 0; i < snakeBody.length; i++) {
         const className = (i === 0) ? 'head' : (i % 2 === 0 ? 'body-part-even' : 'body-part-odd');
-        html += `<div class="${className}" style="grid-area: ${snakeBody[i][0]} / ${snakeBody[i][1]}"></div>`;
+        html += `<div class="${className}" style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
         
-        // Colisión con sí misma
         if (i !== 0 && snakeBody[0][0] === snakeBody[i][0] && snakeBody[0][1] === snakeBody[i][1]) {
             snakeGameOver = true;
             return handleSnakeGameOver();
         }
     }
 
-    if (snakePlayBoard) {
-        snakePlayBoard.innerHTML = html;
-    }
+    if (snakePlayBoard) snakePlayBoard.innerHTML = html;
 }
 
-// Escuchador de teclado
 window.addEventListener("keydown", changeSnakeDirection);

@@ -209,7 +209,7 @@ body {
     transform: translateY(-2px);
     color: #ffffff !important;
 }
-/* REJILLA Y ELEMENTOS DE CYBER SNAKE */
+/* CYBER SNAKE ESTILO ICOMPUTEC */
 .play-board {
     display: grid !important;
     grid-template-columns: repeat(20, 1fr) !important;
@@ -219,33 +219,44 @@ body {
     height: 100%;
 }
 
-/* Fruta / Chip Neón Verde */
+/* Fruta Neón con colores cambiantes (Efecto Chip Tecnológico) */
 .play-board .food {
-    background-color: #22c55e !important;
     border-radius: 4px;
-    box-shadow: 0 0 10px #22c55e, 0 0 15px #22c55e;
+    animation: neonColorShift 1.8s infinite linear, foodPulse 0.8s infinite alternate;
 }
 
 /* Cabeza de la serpiente */
 .play-board .head {
-    background-color: #3b82f6 !important;
+    background: #3b82f6 !important;
     border-radius: 4px;
-    box-shadow: 0 0 8px #2563eb;
+    box-shadow: 0 0 10px #2563eb;
+    border: 1px solid #60a5fa;
     z-index: 2;
 }
 
-/* Partes del cuerpo */
+/* Cuerpo alternado con estilo de circuito de datos */
 .play-board .body-part-even {
-    background-color: #06b6d4 !important;
+    background: #06b6d4 !important;
     border-radius: 3px;
+    box-shadow: 0 0 4px #06b6d4;
 }
 
 .play-board .body-part-odd {
-    background-color: #3b82f6 !important;
+    background: #2563eb !important;
     border-radius: 3px;
+    box-shadow: 0 0 4px #2563eb;
+}
+
+/* Animación de cambio de color neón en la fruta */
+@keyframes neonColorShift {
+    0% { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
+    25% { background-color: #eab308; box-shadow: 0 0 10px #eab308; }
+    50% { background-color: #ec4899; box-shadow: 0 0 10px #ec4899; }
+    75% { background-color: #a855f7; box-shadow: 0 0 10px #a855f7; }
+    100% { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
 }
 
 @keyframes foodPulse {
-    0% { transform: scale(0.85); opacity: 0.8; }
-    100% { transform: scale(1.05); opacity: 1; }
+    0% { transform: scale(0.85); }
+    100% { transform: scale(1.05); }
 }

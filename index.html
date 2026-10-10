@@ -117,28 +117,51 @@
 
 <!-- MODAL 3: ICOMPUTEC JUMP -->
 <div id="modalJump" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
-    <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative border border-blue-500/40">
+    <div class="icomputec-card bg-slate-900 max-w-md w-full p-5 rounded-xl text-center relative border border-blue-500/40">
         <button onclick="closeModal('modalJump')" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">✕</button>
         <h3 class="text-lg font-bold text-white mb-1">🚀 Icomputec Jump</h3>
         <p id="jumpScoreText" class="text-xs text-blue-400 font-bold mb-2">Puntos: 0 | Récord: 0</p>
-        <canvas id="jumpCanvas" width="300" height="380" class="bg-slate-950 border border-blue-900/80 mx-auto rounded-lg shadow-inner w-full max-w-[300px]"></canvas>
-        <button onclick="startJumpGame()" class="btn-blue text-white px-4 py-2.5 rounded-lg text-xs font-bold w-full mt-3">Reiniciar Juego 🔄</button>
+        
+        <canvas id="jumpCanvas" width="300" height="360" class="bg-slate-950 border border-blue-900/80 mx-auto rounded-lg shadow-inner w-full max-w-[300px]"></canvas>
+        
+        <!-- Botones táctiles tácticos para Celular -->
+        <div class="flex justify-between gap-3 mt-3">
+            <button id="btnJumpLeft" class="bg-blue-600/80 active:bg-blue-500 text-white font-bold w-1/2 py-2.5 rounded-lg select-none text-xs border border-blue-400/30 touch-none">◀ IZQUIERDA</button>
+            <button id="btnJumpRight" class="bg-blue-600/80 active:bg-blue-500 text-white font-bold w-1/2 py-2.5 rounded-lg select-none text-xs border border-blue-400/30 touch-none">DERECHA ▶</button>
+        </div>
+
+        <button onclick="startJumpGame()" class="btn-blue text-white px-4 py-2 rounded-lg text-xs font-bold w-full mt-3">Reiniciar Juego 🔄</button>
     </div>
 </div>
 
 <!-- MODAL 4: CYBER SNAKE -->
 <div id="modalSnake" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
-    <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative border border-blue-500/40">
+    <div class="icomputec-card bg-slate-900 max-w-md w-full p-5 rounded-xl text-center relative border border-blue-500/40">
         <button onclick="closeModal('modalSnake')" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">✕</button>
         <h3 class="text-lg font-bold text-white mb-1">🐍 Cyber Snake ICOMPUTEC</h3>
-        <div class="game-details flex justify-between text-xs font-bold text-blue-400 mb-3 px-2">
+        <p class="text-[11px] text-slate-400 mb-2">Usa Flechas / WASD en PC o Desliza / Botones en celular</p>
+
+        <div class="game-details flex justify-between text-xs font-bold text-blue-400 mb-2 px-2">
             <span class="score">Puntos: 0</span>
             <span class="high-score">Récord: 0</span>
         </div>
-        <div class="play-board-container relative w-full aspect-square max-w-[280px] mx-auto rounded-lg overflow-hidden border border-blue-900 bg-slate-950">
-            <div class="play-board w-full h-full grid"></div>
+
+        <!-- Contenedor del Tablero con soporte táctil para deslizamiento (Swipe) -->
+        <div id="snakeBoardContainer" class="play-board-container relative w-full aspect-square max-w-[280px] mx-auto rounded-lg overflow-hidden border border-blue-900 bg-slate-950 touch-none select-none">
+            <div class="play-board w-full h-full"></div>
         </div>
-        <button onclick="startSnakeGame()" class="btn-blue text-white px-4 py-2.5 rounded-lg text-xs font-bold w-full mt-4">Reiniciar Partida 🔄</button>
+
+        <!-- Controles sutiles no invasivos para celular -->
+        <div class="snake-controls grid grid-cols-3 gap-1.5 max-w-[160px] mx-auto mt-3">
+            <div></div>
+            <button data-key="ArrowUp" class="bg-blue-900/60 active:bg-blue-600 text-blue-200 border border-blue-500/30 p-2 rounded-md text-xs font-bold">▲</button>
+            <div></div>
+            <button data-key="ArrowLeft" class="bg-blue-900/60 active:bg-blue-600 text-blue-200 border border-blue-500/30 p-2 rounded-md text-xs font-bold">◀</button>
+            <button data-key="ArrowDown" class="bg-blue-900/60 active:bg-blue-600 text-blue-200 border border-blue-500/30 p-2 rounded-md text-xs font-bold">▼</button>
+            <button data-key="ArrowRight" class="bg-blue-900/60 active:bg-blue-600 text-blue-200 border border-blue-500/30 p-2 rounded-md text-xs font-bold">▶</button>
+        </div>
+
+        <button onclick="startSnakeGame()" class="btn-blue text-white px-4 py-2 rounded-lg text-xs font-bold w-full mt-3">Reiniciar Partida 🔄</button>
     </div>
 </div>
 </div >
