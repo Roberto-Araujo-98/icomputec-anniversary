@@ -1,12 +1,12 @@
 # 🚀 ICOMPUTEC - Landing Page Conmemorativa de Aniversario
 
-[![Ver Sitio Web en Vivo](https://img.shields.io/badge/🌐_Ver_Sitio_Web-GitHub_Pages-2563eb?style=for-the-badge&logo=github)](https://roberto-araujo-98.github.io/icomputec-anniversary/)
+[![Ver Sitio Web en Vivo](https://img.shields.io/badge/🌐_Ver_Sitio_Web-GitHub_Pages-2563eb?style=for-the-badge&logo=github)](https://soporteicomputec.github.io/icomputec-anniversary/)
 
 ---
 
 ### 🌐 Demo en Vivo
 👉 **Accede a la experiencia interactiva aquí:**  
-[https://roberto-araujo-98.github.io/icomputec-anniversary/](https://roberto-araujo-98.github.io/icomputec-anniversary/)
+[https://soporteicomputec.github.io/icomputec-anniversary/](https:/soporteicomputec.github.io/icomputec-anniversary/)
 
 ---
 
