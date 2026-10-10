@@ -11,6 +11,11 @@ body {
     border: 1px solid rgba(37, 99, 235, 0.3);
     backdrop-filter: blur(8px);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    word-break: break-word;
 }
 
 .icomputec-card:hover {
@@ -203,4 +208,44 @@ body {
     box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
     transform: translateY(-2px);
     color: #ffffff !important;
+}
+/* REJILLA Y ELEMENTOS DE CYBER SNAKE */
+.play-board {
+    display: grid !important;
+    grid-template-columns: repeat(20, 1fr) !important;
+    grid-template-rows: repeat(20, 1fr) !important;
+    background-color: #020617;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fruta / Chip Neón Verde */
+.play-board .food {
+    background-color: #22c55e !important;
+    border-radius: 4px;
+    box-shadow: 0 0 10px #22c55e, 0 0 15px #22c55e;
+}
+
+/* Cabeza de la serpiente */
+.play-board .head {
+    background-color: #3b82f6 !important;
+    border-radius: 4px;
+    box-shadow: 0 0 8px #2563eb;
+    z-index: 2;
+}
+
+/* Partes del cuerpo */
+.play-board .body-part-even {
+    background-color: #06b6d4 !important;
+    border-radius: 3px;
+}
+
+.play-board .body-part-odd {
+    background-color: #3b82f6 !important;
+    border-radius: 3px;
+}
+
+@keyframes foodPulse {
+    0% { transform: scale(0.85); opacity: 0.8; }
+    100% { transform: scale(1.05); opacity: 1; }
 }
