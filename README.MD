@@ -5,8 +5,6 @@
 ---
 
 ### 🌐 Demo en Vivo
-👉 **Accede a la experiencia interactiva aquí:**  
-[https://roberto-araujo-98.github.io/icomputec-anniversary/](https:/roberto-araujo-98.github.io/icomputec-anniversary/)
 
 ---
 
