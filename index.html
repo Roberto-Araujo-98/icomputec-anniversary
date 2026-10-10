@@ -27,52 +27,63 @@
 
     <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
 
-    <!-- HERO PRINCIPAL -->
-<main class="w-full max-w-5xl mx-auto text-center my-8">
-    <h1 class="hero-title text-3xl md:text-5xl font-extrabold mb-3 text-white tracking-tight">
+  <!-- HERO PRINCIPAL -->
+<main class="w-full max-w-4xl mx-auto text-center my-6 px-4">
+    <h1 class="hero-title text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3 text-white tracking-tight leading-tight">
         Celebración de Aniversario 
-        <a href="https://icomputec.com/" target="_blank" rel="noopener noreferrer" class="brand-glow text-blue-500 hover:text-blue-400 underline decoration-blue-500/30 underline-offset-4 transition-all">
+        <a href="https://icomputec.com/" target="_blank" rel="noopener noreferrer" class="brand-glow text-blue-500 hover:text-blue-400 underline decoration-blue-500/30 underline-offset-4 transition-all inline-block">
             ICOMPUTEC
         </a>
     </h1>
-    <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto mb-8">
+    <p class="text-slate-400 text-xs sm:text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed">
         Servicio Técnico PREMIUM de Alta Confianza en Arequipa. ¡Explora nuestras trivias y minijuegos!
     </p>
-        <!-- TARJETAS PRINCIPALES -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <!-- 1. TRIVIAS -->
-            <div onclick="showRandomTrivia()" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
-                <div class="text-4xl my-2">💡</div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Datos & Trivias</h3>
-                    <p class="text-xs text-slate-400 mt-1">Haz clic para descubrir la historia, servicios e hitos de ICOMPUTEC.</p>
-                </div>
-                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">Ver Dato →</span>
+    <!-- GRID 2x2 RESPONSIVO (1 col en celular, 2 col en pc/tablet) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-12">
+        
+        <!-- TARJETA 1: TRIVIAS -->
+        <div onclick="openModal('modalTrivia')" class="icomputec-card p-5 sm:p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between min-h-[210px] border border-blue-500/20 hover:border-blue-500/60 transition-all">
+            <div class="text-3xl sm:text-4xl my-1">💡</div>
+            <div>
+                <h3 class="font-bold text-base sm:text-lg text-white mb-1">Datos & Trivias</h3>
+                <p class="text-xs text-slate-400 leading-snug">Haz clic para descubrir la historia, servicios e hitos de ICOMPUTEC.</p>
             </div>
-
-            <!-- 2. MEMORAMA -->
-            <div onclick="openModal('modalMemorama')" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
-                <div class="text-4xl my-2">🧠</div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Memorama Express</h3>
-                    <p class="text-xs text-slate-400 mt-1">Memoriza las posiciones en 1.5s antes de que se oculten las cartas.</p>
-                </div>
-                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">¡Jugar Ahora! →</span>
-            </div>
-
-            <!-- 3. ICOMPUTEC JUMP -->
-            <div onclick="openModal('modalJump')" class="icomputec-card p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between h-56">
-                <div class="text-4xl my-2">🚀</div>
-                <div>
-                    <h3 class="font-bold text-lg text-white">Icomputec Jump</h3>
-                    <p class="text-xs text-slate-400 mt-1">¡Mantén presionadas las flechas para saltar entre plataformas!</p>
-                </div>
-                <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-2">Iniciar Salto →</span>
-            </div>
-
+            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-3">VER DATO →</span>
         </div>
-    </main>
+
+        <!-- TARJETA 2: MEMORAMA -->
+        <div onclick="openModal('modalMemorama')" class="icomputec-card p-5 sm:p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between min-h-[210px] border border-blue-500/20 hover:border-blue-500/60 transition-all">
+            <div class="text-3xl sm:text-4xl my-1">🧠</div>
+            <div>
+                <h3 class="font-bold text-base sm:text-lg text-white mb-1">Memorama Express</h3>
+                <p class="text-xs text-slate-400 leading-snug">Memoriza las posiciones en 1.5s antes de que se oculten las cartas.</p>
+            </div>
+            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-3">¡JUGAR AHORA! →</span>
+        </div>
+
+        <!-- TARJETA 3: ICOMPUTEC JUMP -->
+        <div onclick="openModal('modalJump')" class="icomputec-card p-5 sm:p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between min-h-[210px] border border-blue-500/20 hover:border-blue-500/60 transition-all">
+            <div class="text-3xl sm:text-4xl my-1">🚀</div>
+            <div>
+                <h3 class="font-bold text-base sm:text-lg text-white mb-1">Icomputec Jump</h3>
+                <p class="text-xs text-slate-400 leading-snug">¡Mantén presionadas las flechas para saltar entre plataformas!</p>
+            </div>
+            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-3">INICIAR SALTO →</span>
+        </div>
+
+        <!-- TARJETA 4: CYBER SNAKE -->
+        <div onclick="openModal('modalSnake')" class="icomputec-card p-5 sm:p-6 rounded-xl cursor-pointer text-center flex flex-col justify-between min-h-[210px] border border-blue-500/20 hover:border-blue-500/60 transition-all">
+            <div class="text-3xl sm:text-4xl my-1">🐍</div>
+            <div>
+                <h3 class="font-bold text-base sm:text-lg text-white mb-1">Cyber Snake</h3>
+                <p class="text-xs text-slate-400 leading-snug">Guía la serpiente de datos, recolecta chips y supera tu récord.</p>
+            </div>
+            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider mt-3">¡INICIAR JUEGO! →</span>
+        </div>
+
+    </div>
+</main>
 
     <!-- MODAL 1: TRIVIAS -->
 <div id="modalTrivia" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
@@ -104,25 +115,35 @@
     </div>
 </div>
 
-<!-- MODAL: ICOMPUTEC JUMP -->
+<!-- MODAL 3: ICOMPUTEC JUMP -->
 <div id="modalJump" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
     <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative border border-blue-500/40">
         <button onclick="closeModal('modalJump')" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">✕</button>
         <h3 class="text-lg font-bold text-white mb-1">🚀 Icomputec Jump</h3>
         <p id="jumpScoreText" class="text-xs text-blue-400 font-bold mb-2">Puntos: 0 | Récord: 0</p>
-        
-        <canvas id="jumpCanvas" width="300" height="380" class="bg-slate-950 border border-blue-900/80 mx-auto rounded-lg shadow-inner"></canvas>
-        
-        <!-- Botones táctiles móviles -->
-        <div class="flex justify-between gap-4 mt-3 md:hidden">
-            <button id="btnJumpLeft" class="bg-blue-800 active:bg-blue-600 text-white font-bold w-1/2 py-3 rounded-lg select-none text-sm touch-none">◀ A IZQUIERDA </button>
-            <button id="btnJumpRight" class="bg-blue-800 active:bg-blue-600 text-white font-bold w-1/2 py-3 rounded-lg select-none text-sm touch-none">DERECHA D ▶</button>
-        </div>
-
+        <canvas id="jumpCanvas" width="300" height="380" class="bg-slate-950 border border-blue-900/80 mx-auto rounded-lg shadow-inner w-full max-w-[300px]"></canvas>
         <button onclick="startJumpGame()" class="btn-blue text-white px-4 py-2.5 rounded-lg text-xs font-bold w-full mt-3">Reiniciar Juego 🔄</button>
     </div>
+</div>
 
+<!-- MODAL 4: CYBER SNAKE -->
+<div id="modalSnake" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden justify-center items-center p-4 z-50">
+    <div class="icomputec-card bg-slate-900 max-w-md w-full p-6 rounded-xl text-center relative border border-blue-500/40">
+        <button onclick="closeModal('modalSnake')" class="absolute top-3 right-3 text-slate-400 hover:text-white text-lg">✕</button>
+        <h3 class="text-lg font-bold text-white mb-1">🐍 Cyber Snake ICOMPUTEC</h3>
+        <div class="game-details flex justify-between text-xs font-bold text-blue-400 mb-3 px-2">
+            <span class="score">Puntos: 0</span>
+            <span class="high-score">Récord: 0</span>
+        </div>
+        <div class="play-board-container relative w-full aspect-square max-w-[280px] mx-auto rounded-lg overflow-hidden border border-blue-900 bg-slate-950">
+            <div class="play-board w-full h-full grid"></div>
+        </div>
+        <button onclick="startSnakeGame()" class="btn-blue text-white px-4 py-2.5 rounded-lg text-xs font-bold w-full mt-4">Reiniciar Partida 🔄</button>
+    </div>
+</div>
 </div >
+
+
  
         <a href="https://tienda.icomputec.com/" 
            target="_blank" 
